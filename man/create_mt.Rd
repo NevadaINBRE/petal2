@@ -4,10 +4,10 @@
 \alias{create_mt}
 \title{Create a metric table}
 \usage{
-create_mt(x, method, ...)
+create_mt(x, method)
 }
 \arguments{
-\item{x}{A matrix with the -omics data in the rows and the conditions in the columns}
+\item{x}{A matrix with the conditions in the rows and the -omics data in the columns}
 
 \item{method}{The method passed to dist}
 

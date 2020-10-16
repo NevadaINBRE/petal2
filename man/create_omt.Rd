@@ -7,7 +7,7 @@
 create_omt(x, method, sort_ascending = TRUE, ...)
 }
 \arguments{
-\item{x}{A matrix with the -omics data in the rows and the conditions in the columns}
+\item{x}{A matrix with the conditions in the rows and the -omics data in the columns}
 
 \item{method}{The method passed to dist}
 

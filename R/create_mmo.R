@@ -1,21 +1,10 @@
-#' Create a metric matrix
-#'
-#' For now, a simple wrapper around `dist`
-#' @param x A matrix with the -omics data in the rows and the conditions in the columns
-#' @param method The method passed to dist
-#' @param ... other parameters passed to dist
-#' @export
-create_mm <- function(x, method, ...) {
-  dist(x, method, ...)
-}
-
 #' Create a metric table
-#' @param x A matrix with the -omics data in the rows and the conditions in the columns
+#' @param x A matrix with the conditions in the rows and the -omics data in the columns
 #' @param method The method passed to dist
 #' @param ... other parameters passed to dist
 #' @importFrom data.table data.table
 #' @export
-create_mt <- function(x, method, ...) {
+create_mt <- function(x, method) {
   D <- create_mm(x, method, ...)
   d <- attr(D, "Size")
   L <- labels(D)
@@ -25,7 +14,7 @@ create_mt <- function(x, method, ...) {
 }
 
 #' Create an ordered metric table
-#' @param x A matrix with the -omics data in the rows and the conditions in the columns
+#' @param x A matrix with the conditions in the rows and the -omics data in the columns
 #' @param method The method passed to dist
 #' @param sort_ascending Whether the table should be sorted in ascending order
 #' @param ... other parameters passed to dist

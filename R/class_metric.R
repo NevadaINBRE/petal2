@@ -1,94 +1,46 @@
-# Constructors (internal use)
-new_metric <- function(.f, sort_decreasing, self_dist, is_symmetric, is_triangular) {
-  classes <- "PreMetric"
-  if (is_symmetric) classes <- c("SemiMetric", classes)
-  if (is_triangular) classes <- c("Metric", classes)
-
-  structure(.f, class = classes,
+new_metric <- function(.f, self_dist, sort_decreasing, is_symmetric) {
+  structure(.f, class = "Metric",
             self_dist = self_dist,
-            sort_decreasing = sort_decreasing)
+            sort_decreasing = sort_decreasing,
+            is_symmetric = is_symmetric)
 }
 
 
-# Validator (Go along with helpers)
+
+
 validate_metric <- function(m) {
 
   f <- unclass(m)
   stopifnot(is.function(f))
-  self_dist <- attr(m, "self_dist")
+  stopifnot(is.logical(attr(m, "sort_decreasing")))
+  stopifnot(is.logical(attr(m, "is_symmetric")))
 
   x <- c(0, 3.14, 1, 2.718)
-  y <- c(8, 6.75, 3, 0.9)
+  y <- c(8, 6.75, 3, 0.900)
 
-  is_self_similar <- all.equal(m(x, x), self_dist)
-  is_symmetric <- all.equal(m(x, y), m(y, x))
+  stopifnot(all.equal(self_distance(m), m(x,x)))
+  stopifnot(all.equal(self_distance(m), m(y,y)))
 
-  if (!is_self_similar) {
-    stop(
-      "The reported self_similar value must match the computed value",
-      call. = FALSE
-    )
-  }
-
-  if (is_SemiMetric(m) && !is_symmetric) {
-    stop(
-      "A SemiMetric must be symmetric. I.e. f(x,y) == f(y,x) for all x,y",
-      call. = FALSE
-    )
-  }
+  # TODO: Determine how best to check for symmetry
 
   m
 }
 
 
-# Helpers (external constructors)
-PreMetric <- function(.f, sort_decreasing, self_dist = .f(1, 1)) {
-  validate_metric(new_metric(.f, sort_decreasing, self_dist, FALSE, FALSE))
+
+
+#' Create a new metric
+#'
+#' In this package, a metric is used to generally mean the (dis)similarity
+#'     between two vectors of genes or proteins.
+#' @param .f A function that takes in two vectors
+#' @param self_dist The distance between a vector and itself. For the Euclidean
+#'     metric, the value is `0.0`, and for correlation metrics, the value is `1.0`
+#' @param sort_decreasing Should values be sorted in ascending order (smaller
+#'     values implying more similarity) or in descending order (larger values
+#'     implying more similarity)
+#' @param is_symmetric Is the metric `f(x, y)` the same as `f(y, x)`
+#' @export
+Metric <- function(.f, self_dist = .f(1, 1), sort_decreasing, is_symmetric) {
+  validate_metric(new_metric(.f, self_dist, sort_decreasing, is_symmetric))
 }
-SemiMetric <- function(.f, sort_decreasing, self_dist = .f(1, 1)) {
-  validate_metric(new_metric(.f, sort_decreasing, self_dist, TRUE, FALSE))
-}
-Metric <- function(.f, sort_decreasing, self_dist = .f(1, 1)) {
-  validate_metric(new_metric(.f, sort_decreasing, self_dist, TRUE, TRUE))
-}
-
-
-# Utilities
-is_PreMetric  <- function(x) "PreMetric" %in% class(x)
-is_SemiMetric <- function(x) "SemiMetric" %in% class(x)
-is_Metric     <- function(x) "Metric" %in% class(x)
-
-
-# Metric Definitions
-
-#' Euclidean distance metric
-#' @export
-Euclidean <- Metric(euclidean, sort_decreasing = FALSE, self_dist = 0.0)
-
-#' Compute the Pearson correlation distance
-#' @importFrom coop pcor
-#' @export
-pearson <- function(x, y) coop::pcor(x, y)
-#' Pearson correlation distance metric
-#' @export
-Pearson <- Metric(pearson, sort_decreasing = TRUE, self_dist = 1.0)
-
-#' Compute the Spearman rank correlation distance
-#' @importFrom coop pcor
-#' @importFrom data.table frankv
-#' @export
-spearman <- function(x, y) {
-  coop::pcor(data.table::frankv(x, ties.method = "average"),
-             data.table::frankv(y, ties.method = "average"))
-}
-#' Spearman rank correlation distance metric
-#' @export
-Spearman <- Metric(spearman, sort_decreasing = TRUE, self_dist = 1.0)
-
-#' Compute the Kendall rank correlation distance
-#' @importFrom pcaPP cor.fk
-#' @export
-kendall <- function(x, y) pcaPP::cor.fk(x, y)
-#' Kendall rank correlation distance metric
-#' @export
-Kendall <- Metric(kendall, sort_decreasing = TRUE, self_dist = 1.0)
