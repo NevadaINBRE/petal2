@@ -9,3 +9,7 @@ euclidean <- function(x, y) {
     .Call(`_petal2_euclidean`, x, y)
 }
 
+mmsym <- function(X, func) {
+    .Call(`_petal2_mmsym`, X, func)
+}
+
