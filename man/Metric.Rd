@@ -4,12 +4,12 @@
 \alias{Metric}
 \title{Create a new metric}
 \usage{
-Metric(.f, self_dist = .f(1, 1), sort_decreasing, is_symmetric)
+Metric(.f, self_distance = .f(1, 1), sort_decreasing, is_symmetric)
 }
 \arguments{
 \item{.f}{A function that takes in two vectors}
 
-\item{self_dist}{The distance between a vector and itself. For the Euclidean
+\item{self_distance}{The distance between a vector and itself. For the Euclidean
 metric, the value is \code{0.0}, and for correlation metrics, the value is \code{1.0}}
 
 \item{sort_decreasing}{Should values be sorted in ascending order (smaller

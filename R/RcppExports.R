@@ -5,7 +5,6 @@
 #'
 #' @param x first vector
 #' @param y second vector
-#' @export
 euclidean <- function(x, y) {
     .Call(`_petal2_euclidean`, x, y)
 }

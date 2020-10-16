@@ -6,7 +6,6 @@ using namespace Rcpp;
 //'
 //' @param x first vector
 //' @param y second vector
-//' @export
 // [[Rcpp::export]]
 double euclidean(NumericVector x, NumericVector y) {
   return sqrt(sum( pow(x - y, 2) ));
