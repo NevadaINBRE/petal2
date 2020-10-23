@@ -9,6 +9,9 @@ euclidean <- function(x, y) {
     .Call(`_petal2_euclidean`, x, y)
 }
 
+#' Compute the metric matrix of a symmetric metric
+#' @param X A matrix with the conditions in the rows and the -omics data in the columns
+#' @param func a metric function that takes in two vectors of equal length
 mmsym <- function(X, func) {
     .Call(`_petal2_mmsym`, X, func)
 }
