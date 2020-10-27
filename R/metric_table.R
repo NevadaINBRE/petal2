@@ -5,7 +5,6 @@ metric_table <- function(x, ...) UseMethod("metric_table")
 #'
 #' @param x An object of class `dist`
 #' @param sort_decreasing should the resulting table be sorted in descending order
-#' @importFrom data.table data.table setorderv
 #' @export
 metric_table.dist <- function(x, sort_decreasing) {
   d <- attr(x, "Size")

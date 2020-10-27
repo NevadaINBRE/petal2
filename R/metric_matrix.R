@@ -21,7 +21,8 @@ metric_matrix <- function(x, method, ...) {
       pearson  = coop::pcor(t(x)),
       spearman = coop::pcor(apply(t(x), 2, data.table::frankv)),
       kendall  = pcaPP::cor.fk(t(x))
-      # petal_euclidean = parallelDist::parDist(x, method = "custom", func = petal_euclidean_Ptr)
+      # petal_euclidean = parallelDist::parDist(
+      #   x, method = "custom", func = petal_euclidean_Ptr)
     )
     mm <- as.dist(mm)
   } else {
