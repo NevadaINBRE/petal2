@@ -15,8 +15,12 @@ RoxygenNote: 7.1.1
 LinkingTo: 
     Rcpp,
     RcppArmadillo
-Imports: 
+Imports:
     Rcpp,
     data.table,
     coop,
-    pcaPP
+    pcaPP,
+    parallelDist,
+    igraph,
+Depends: 
+    R (>= 2.10)
