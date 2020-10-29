@@ -11,6 +11,7 @@
 #'     \code{\link[parallelDist]{parDist}}
 #' @param ... additional parameters which will be passed to the distance methods
 #' @return an object of class 'dist'
+#' @importFrom stats as.dist
 #' @export
 metric_matrix <- function(x, method, ...) {
 
@@ -24,7 +25,7 @@ metric_matrix <- function(x, method, ...) {
       mutinformation = infotheo::mutinformation(data.table::data.table(x)),
       bicor = WGCNA::bicor(x, nThreads = parallel::detectCores()),
     )
-    mm <- as.dist(mm)
+    mm <- stats::as.dist(mm)
   } else {
     mm <- parallelDist::parDist(x, method, ...)
   }
