@@ -18,11 +18,11 @@ metric_matrix <- function(x, method, ...) {
 
   if (method %in% dist_methods$petal) {
     mm <- switch (method,
-      pearson  = coop::pcor(t(x)),
-      spearman = coop::pcor(apply(t(x), 2, data.table::frankv)),
-      kendall  = pcaPP::cor.fk(t(x))
-      # petal_euclidean = parallelDist::parDist(
-      #   x, method = "custom", func = petal_euclidean_Ptr)
+      pearson  = coop::tpcor(x),
+      spearman = coop::tpcor(apply(x, 1, data.table::frankv)),
+      kendall  = pcaPP::cor.fk(t(x)),
+      mutinformation = infotheo::mutinformation(data.table::data.table(x)),
+      bicor = WGCNA::bicor(x),
     )
     mm <- as.dist(mm)
   } else {

@@ -20,11 +20,12 @@ simple_threshold_seq <- function(x, sort_decreasing, length.out = 6) {
 #'
 #' @param x an object of class `dist`
 #' @param thresh a cutoff value to create the adjacency matrix
+#' @param method which side of the cutoff value to set to 0
 #' @export
-evaluate_threshold <- function(x, thresh) {
+evaluate_threshold <- function(x, thresh, method = "less") {
 
-  g <- graph_from_adjacency_matrix(
-    adjmatrix = signum_adjacency(as.matrix(x), thresh, "less"),
+  g <- igraph::graph_from_adjacency_matrix(
+    adjmatrix = signum_adjacency(as.matrix(x), thresh, method),
     mode = "undirected",
     weighted = NULL,
     diag = FALSE
@@ -37,7 +38,6 @@ evaluate_threshold <- function(x, thresh) {
   g_components <- igraph::components(g)
   n_components <- g_components$no
   max_component <- max(g_components$csize)
-  prop_big_component <- max_component / n
 
   degree <- igraph::degree(g)
   degree_table <- table(degree)

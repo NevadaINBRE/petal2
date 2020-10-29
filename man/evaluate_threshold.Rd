@@ -4,12 +4,14 @@
 \alias{evaluate_threshold}
 \title{Evaluate the properties of a graph determined by a threshold value}
 \usage{
-evaluate_threshold(x, thresh)
+evaluate_threshold(x, thresh, method = "less")
 }
 \arguments{
 \item{x}{an object of class \code{dist}}
 
 \item{thresh}{a cutoff value to create the adjacency matrix}
+
+\item{method}{which side of the cutoff value to set to 0}
 }
 \description{
 Evaluate the properties of a graph determined by a threshold value
