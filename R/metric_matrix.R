@@ -22,7 +22,7 @@ metric_matrix <- function(x, method, ...) {
       spearman = coop::tpcor(apply(x, 1, data.table::frankv)),
       kendall  = pcaPP::cor.fk(t(x)),
       mutinformation = infotheo::mutinformation(data.table::data.table(x)),
-      bicor = WGCNA::bicor(x),
+      bicor = WGCNA::bicor(x, nThreads = parallel::detectCores()),
     )
     mm <- as.dist(mm)
   } else {
