@@ -10,7 +10,7 @@
 #' @param length.out the number of threshold values to return
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- metric_matrix(dat, "spearman")
 #' thresh <- simple_threshold_seq(x, sort_decreasing=TRUE)
 #'}
