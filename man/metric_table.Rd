@@ -4,12 +4,12 @@
 \alias{metric_table}
 \title{Create a sorted metric table from class \code{dist}}
 \usage{
-metric_table(x, ...)
+metric_table(x, sort_decreasing)
 }
 \arguments{
 \item{x}{An object of class \code{dist}}
 
-\item{...}{Extra arguments defined by the specific method}
+\item{sort_decreasing}{should the resulting table be sorted in descending order}
 }
 \description{
 Create a sorted metric table from class \code{dist}

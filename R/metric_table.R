@@ -1,9 +1,9 @@
 #' Create a sorted metric table from class `dist`
 #'
 #' @param x An object of class `dist`
-#' @param ... Extra arguments defined by the specific method
+#' @param sort_decreasing should the resulting table be sorted in descending order
 #' @export
-metric_table <- function(x, ...) UseMethod("metric_table")
+metric_table <- function(x, sort_decreasing) UseMethod("metric_table")
 
 #' Create a sorted metric table from class `dist`
 #'
