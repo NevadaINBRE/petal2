@@ -23,7 +23,7 @@ table, M. Take the first threshold to be \code{M[m-1]} and the last threshold to
 \verb{M[150m]} \insertCite{petereit2016petal}{petal2}.
 }
 \examples{
-\dontrun{
+\donttest{
 x <- metric_matrix(dat, "spearman")
 thresh <- simple_threshold_seq(x, sort_decreasing=TRUE)
 }

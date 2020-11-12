@@ -19,15 +19,15 @@ metric_matrix <- function(x, method, ...) {
 
   if (method %in% dist_methods$petal) {
     mm <- switch (method,
-      pearson  = coop::tpcor(x),
-      spearman = coop::tpcor(apply(x, 1, data.table::frankv)),
-      kendall  = pcaPP::cor.fk(t(x)),
+      pearson  = coop::pcor(x),
+      spearman = coop::pcor(apply(x, 2, data.table::frankv)),
+      kendall  = pcaPP::cor.fk(x),
       mutinformation = infotheo::mutinformation(data.table::data.table(x)),
       bicor = WGCNA::bicor(x, nThreads = parallel::detectCores()),
     )
     mm <- stats::as.dist(mm)
   } else {
-    mm <- parallelDist::parDist(x, method, ...)
+    mm <- parallelDist::parDist(t(x), method, ...)
   }
 
   mm
