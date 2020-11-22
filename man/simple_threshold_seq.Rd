@@ -13,6 +13,21 @@ simple_threshold_seq(x, sort_decreasing, length.out = 6)
 
 \item{length.out}{the number of threshold values to return}
 }
+\value{
+A sequence of threshold values.
+}
 \description{
-Generate a sequence of threshold values given a 'dist' object
+A simple rule is used to get the first and last thresholds. If there are \code{m}
+variables, then there are \code{m(m-1)/2} pairs of variables in the sorted metric
+table, M. Take the first threshold to be \code{M[m-1]} and the last threshold to be
+\verb{M[150m]} \insertCite{petereit2016petal}{petal2}.
+}
+\examples{
+\donttest{
+x <- metric_matrix(dat, "spearman")
+thresh <- simple_threshold_seq(x, sort_decreasing=TRUE)
+}
+}
+\references{
+\insertAllCited{}
 }

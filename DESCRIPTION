@@ -13,7 +13,7 @@ Description: Create and manimpulate metric matrices. This package aims to aid in
 URL: https://github.com/NevadaINBRE/petal2
 BugReports: https://github.com/NevadaINBRE/petal2/issues
 Depends: R (>= 3.0)
-License: GPL-3 + file LICENSE.md
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -25,5 +25,7 @@ Imports:
     parallelDist,
     igraph,
     infotheo,
-    WGCNA
+    WGCNA,
+    Rdpack
 biocViews:
+RdMacros: Rdpack
