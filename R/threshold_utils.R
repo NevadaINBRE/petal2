@@ -88,7 +88,7 @@ evaluate_threshold <- function(x, thresh, method = "less") {
   degree_fit_r2    <- summary(degree_fit)$r.squared
   degree_power     <- -unname(coef(degree_fit)[2])
 
-  c(
+  ret <- c(
     threshold                 = thresh,
     diameter                  = g_diameter,
     mean_path_length          = mean_pl,
@@ -102,5 +102,6 @@ evaluate_threshold <- function(x, thresh, method = "less") {
     degree_median             = median(degree),
     degree_max                = max(degree)
   )
-
+  loss <- thresh_loss(as.list(ret))
+  c(ret, loss = loss)
 }
