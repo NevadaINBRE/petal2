@@ -10,7 +10,7 @@
 #' @param length.out the number of threshold values to return
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' x <- metric_matrix(dat, "spearman")
 #' thresh <- simple_threshold_seq(x, sort_decreasing=TRUE)
 #'}
@@ -88,7 +88,7 @@ evaluate_threshold <- function(x, thresh, method = "less") {
   degree_fit_r2    <- summary(degree_fit)$r.squared
   degree_power     <- -unname(coef(degree_fit)[2])
 
-  list(
+  c(
     threshold                 = thresh,
     diameter                  = g_diameter,
     mean_path_length          = mean_pl,

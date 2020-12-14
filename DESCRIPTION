@@ -27,6 +27,7 @@ Imports:
     infotheo,
     WGCNA,
     Rdpack,
-    data.table
+    data.table,
+    rBayesianOptimization
 biocViews:
 RdMacros: Rdpack
