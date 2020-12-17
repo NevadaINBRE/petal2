@@ -4,3 +4,8 @@
 ^data-raw$
 
 ^scratch$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^README\.Rmd$
+^\.github$

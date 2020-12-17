@@ -12,6 +12,17 @@ winning_thresh(
   min_prop_big_comp = 0.95
 )
 }
+\arguments{
+\item{thresh_df}{The input threshold data frame}
+
+\item{min_r2}{Minimum r-squared for the fit}
+
+\item{min_power}{Minimum degree of the power for the fit}
+
+\item{min_prop_used}{Minimum proportion of nodes used}
+
+\item{min_prop_big_comp}{Minimum proportion of big components}
+}
 \description{
 Pick the winning threshold the produces a small-world/scale-free network
 }
