@@ -18,30 +18,52 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of petal2 is to ...
+Create small-world, scale-free networks from genomic data sets.
 
 ## Installation
 
-You can install the released version of petal2 from [CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of petal2 from [CRAN](https://CRAN.R-project.org) with: -->
 
-``` r
-install.packages("petal2")
-```
+<!-- ``` r -->
+<!-- install.packages("petal2") -->
+<!-- ``` -->
 
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version of petal2 from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("NevadaINBRE/petal2")
 ```
-## Example
+## Example Use
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to construct a small-world, scale-free network:
 
 ```{r example}
 library(petal2)
-## basic example code
+dat <- SampleData # in the petal2 package
+
+# Sample data has missing values
+dat <- dat[, complete.cases(t(dat))]
+
+# Create a metric matrix, in this case pairwise bi-weight mid-correlation
+mm <- metric_matrix(dat, method = "bicor")
+
+# Find a threshold that produces a small-world, scale-free network
+ret <- bayes_thresh(
+  mm = mm, 
+  bounds = c(0.5, 0.99),
+  init_points = 2,
+  n_iter = 8,
+  verbose = TRUE
+)
+
+# Create an adjacency matrix based on the winning threshold
+am <- signum_adjacency(mm, tau = ret$Best_Par, method = "less")
+
+# Create an igraph object from the adjacency matrix
+g <- igraph::graph_from_adjacency_matrix(am, "undirected", diag = FALSE)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Common gotchas
 
+- The input data frame or matrix must be organized such that the rows represent observations (conditions) and the columns represent the variables (gene expressions)

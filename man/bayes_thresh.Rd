@@ -7,15 +7,12 @@
 bayes_thresh(
   mm,
   bounds,
+  n_iter,
   init_grid_dt = NULL,
   init_points = 0,
-  n_iter,
   acq = "ucb",
   kappa = 2.576,
-  eps = 0,
-  kernel = list(type = "exponential", power = 2),
-  verbose = FALSE,
-  ...
+  verbose = FALSE
 )
 }
 \arguments{
@@ -24,13 +21,13 @@ bayes_thresh(
 \item{bounds}{A numeric vector of lower and upper bounds. All the sample
 points in \code{init_grid_dt} should be in the range of bounds.}
 
+\item{n_iter}{Total number of times the Bayesian Optimization is to repeated.}
+
 \item{init_grid_dt}{A numeric vector of user specified points to sample the
 target function.}
 
 \item{init_points}{Number of randomly chosen points to sample the target
 function before Bayesian Optimization fitting the Gaussian Process.}
-
-\item{n_iter}{Total number of times the Bayesian Optimization is to repeated.}
 
 \item{acq}{Acquisition function type to be used. Can be "ucb", "ei" or "poi".
 \itemize{
@@ -42,15 +39,7 @@ function before Bayesian Optimization fitting the Gaussian Process.}
 \item{kappa}{tunable parameter kappa of GP Upper Confidence Bound, to balance exploitation against exploration,
 increasing kappa will make the optimized hyperparameters pursuing exploration.}
 
-\item{eps}{tunable parameter epsilon of Expected Improvement and Probability of Improvement, to balance exploitation against exploration,
-increasing epsilon will make the optimized hyperparameters are more spread out across the whole range.}
-
-\item{kernel}{Kernel (aka correlation function) for the underlying Gaussian Process. This parameter should be a list
-that specifies the type of correlation function along with the smoothness parameter. Popular choices are square exponential (default) or matern 5/2}
-
 \item{verbose}{Whether or not to print progress.}
-
-\item{...}{Other arguments passed on to \code{\link[GPfit]{GP_fit}}.}
 }
 \value{
 a list of Bayesian Optimization result is returned:
