@@ -14,12 +14,132 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+`petal2` is intended to be used for the analysis of genome data, and works closely with `igraph`. We will go through a short example of how to use the basic functions in `petal2` and highlight a general workflow.
+
 ```{r setup}
 library(petal2)
+library(igraph)
 ```
 
 ## Prepare the data
 
+The first step is preparing a data set. Functions in `petal2` that work with data frames and matrices assume that the rows contain the observations (patients, conditions, etc.) and the columns contain the variables (gene expression, counts, etc.). This is in line with the concept of [tidy data](https://r4ds.had.co.nz/tidy-data.html).
+
+We provide a sample data set that has `8` conditions and `3535` identifiers:
+
+```{r}
+m <- SampleData
+str(m)
+```
+
+The data has missing values, so we will need to remove the genes that don't have complete cases.
+
+```{r}
+# Keep the columns that have complete cases
+m <- m[, complete.cases(t(m))]
+```
+
+
 ## Construct a small-world, scale-free network
 
-## Extract vicinity networks
+Once the data is prepared, the next step is to construct the pairwise distance matrix. We provide the function `metric_matrix` which is a wrapper for `parallelDist::parDist()` and other computationally efficient correlation metrics. The function can also handle custom distance functions as described [in the parallelDist vignettes](https://cran.r-project.org/web/packages/parallelDist/vignettes/parallelDist.pdf).
+
+```{r}
+mm <- metric_matrix(m, "spearman")
+```
+
+In the construction of a small-world (SW), scale-free (SF) network, we need to determine a threshold value to create the adjacency matrix with. The ideal threshold produces a network that has the SW and SF properties. One way to determine the best threshold is to test a sequence of thresholds and see which of them produces a SW/SF network.
+
+```{r}
+# create a sequence of thresholds to test
+thresh_seq <- simple_threshold_seq(mm, TRUE, 10)
+
+# evaluate the network properties for each threshold
+ret2 <- sapply(thresh_seq, evaluate_threshold, x = mm)
+
+# Turn the results into a data frame
+thresh_df <- data.frame(t(ret2))
+
+# determine the winning threshold
+winning_threshold <- winning_thresh(thresh_df)
+```
+
+In this data and set of thresholds, there are none that have the SW/SF properties, so the first best threshold is selected. The concept of "best" is determined by a loss function (`thresh_loss()`) that penalizes networks that are farther from being SW/SF. Another strategy is to use this loss function in a Bayesian optimization algorithm to search for a threshold that produces the SW/SF network (or closest to).
+
+For this method, we wrote a wrapper around `rBayesianOptimization::BayesianOptimization()` that will search for a threshold that minimizes the loss function. This strategy is preferred for larger data sets where the computational time to evaluate a threshold extends into multiple minutes. 
+
+```{r}
+# Use an heuristic to determine the lower and upper threshold
+(bounds <- rev(simple_threshold_seq(mm, TRUE, 2)))
+```
+
+```{r}
+# evaluate 10 points (including the endpoints)
+ret <- bayes_thresh(
+  mm = mm,
+  bounds = bounds,
+  n_iter = 8,
+  init_grid_dt = list(x = bounds),
+  verbose = TRUE
+)
+```
+
+We can compare the evaluated thresholds for each strategy. For this data, they both produce the same winning threshold (the minimum bound), but the Bayesian method spends less time evaluating thresholds that are less likely to be optimal.
+
+```{r}
+plot(ret$History$x, -1*ret$History$Value,
+     xlab = "Threshold", ylab = "Loss",
+     main = "Threshold sampling strategies",
+     xlim = c(0.55, 0.96), ylim = c(0, 22),
+     col = "blue", pch = 19)
+points(thresh_df$threshold, thresh_df$loss,
+       col = "red", pch = 2)
+legend(x = "topleft", legend = c("Bayes Opt", "Simple Seq"),
+       col = c("blue", "red"),
+       pch = c(19, 2))
+```
+
+## Create a graph object
+
+With the winning threshold selected, we next create the adjacency matrix. We provide the `signum_adjacency()` function that simply sets the elements of the metric matrix to `0` if they are below a cutoff value, or `1` otherwise. The direction of the cutoff can also be set with the `method` argument.
+
+```{r}
+adj_matrix <- signum_adjacency(mm, ret$Best_Par)
+```
+
+Then an `igraph::igraph` object can be created:
+
+```{r}
+g <- igraph::graph_from_adjacency_matrix(
+  adjmatrix = adj_matrix,
+  mode = "undirected",
+  weighted = NULL,
+  diag = FALSE
+)
+```
+
+It may often be necessary to decompose the network into its components, and subsequent analyses may only be focused on the largest component.
+
+```{r}
+# Decompose the network into its components
+g_decomp <- igraph::decompose(g)
+
+# Get the size of each component by the number of vertices
+comp_size_order <- order(sapply(g_decomp, igraph::vcount), decreasing = TRUE)
+
+# Take the largest component
+s <- g_decomp[[comp_size_order[1]]]
+```
+
+# Conclusion
+
+Now that a graph object is in hand, the entire suite of `igraph` functions can be used for determining network properties, cluster detection, creating vicinity networks, and more. Lastly, the igraph object can be exported for use in other applications like [Cytoscape](https://cytoscape.org/).
+
+```{r, eval=FALSE}
+# Cytoscape can read edgelist files
+igraph::write_graph(graph = s, 
+                    file = "largest_component.el", 
+                    format = "edgelist")
+```
+
