@@ -1,0 +1,11 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  petal2: petal2.html
+  using-petal2: using-petal2.html
+last_built: 2020-12-17T19:05Z
+urls:
+  reference: https://github.com/NevadaINBRE/petal2/reference
+  article: https://github.com/NevadaINBRE/petal2/articles
+
