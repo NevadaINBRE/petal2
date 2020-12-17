@@ -31,3 +31,7 @@ Imports:
     rBayesianOptimization
 biocViews:
 RdMacros: Rdpack
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

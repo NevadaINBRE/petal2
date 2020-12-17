@@ -1,0 +1,36 @@
+url: https://github.com/NevadaINBRE/petal2
+
+template:
+  params:
+    bootswatch: flatly
+
+authors:
+  Alex Knudson:
+    href: https://github.com/adknudson
+
+reference:
+- title: Primary Functions
+  contents:
+  - metric_matrix
+  - metric_table
+  - metric_table.dist
+- title: Threshold Functions
+  contents:
+  - simple_threshold_seq
+  - evaluate_threshold
+  - winning_thresh
+  - bayes_thresh
+  - thresh_loss
+- title: Utilities
+  contents:
+  - signum_adjacency
+- title: Data Sets
+  contents:
+  - SampleData
+
+articles:
+- title: Articles
+  navbar: Get Started
+  contents:
+  - petal2
+  - using-petal2

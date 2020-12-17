@@ -4,7 +4,7 @@
 \alias{signum_adjacency}
 \title{Filter a matrix by a simple threshold value}
 \usage{
-signum_adjacency(x, tau, method = c("less", "greater"))
+signum_adjacency(x, tau, method = c("less", "le", "ge", "greater"))
 }
 \arguments{
 \item{x}{a numeric vector or matrix}
