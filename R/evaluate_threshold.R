@@ -13,13 +13,15 @@ evaluate_threshold <- function(x, thresh, method = "less") {
   # Need to save the number of nodes before and after filtering in order to
   # calculate the proportion of nodes used.
   # TODO: See if igraph can use sparse matrices for graph creation
-  am <- signum_adjacency(as.matrix(x), thresh, method)
+  am <- signum_adjacency(x, thresh, method)
+  am <- as.matrix(am)
+  gc()
   N0 <- nrow(am)
   unconnected_nodes <- unname(which(rowSums(am) == 0))
   if (length(unconnected_nodes) != 0)
     am <- am[-unconnected_nodes, -unconnected_nodes]
   N1 <- nrow(am)
-
+  gc()
 
   g <- igraph::graph_from_adjacency_matrix(
     adjmatrix = am,
@@ -27,7 +29,8 @@ evaluate_threshold <- function(x, thresh, method = "less") {
     weighted = NULL,
     diag = FALSE
   )
-
+  rm(am)
+  gc()
 
   g_diameter <- igraph::diameter(g)
   mean_cc <- igraph::transitivity(g, type = "average")  # cluster coefficient

@@ -3,6 +3,7 @@
 S3method(metric_table,dist)
 export(bayes_thresh)
 export(evaluate_threshold)
+export(make_ego_graph_from_goi)
 export(metric_matrix)
 export(metric_table)
 export(signum_adjacency)
