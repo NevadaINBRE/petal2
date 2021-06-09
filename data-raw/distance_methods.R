@@ -2,8 +2,7 @@ petal_methods <- c(
   "pearson",
   "spearman",
   "kendall",
-  "mutinformation",
-  "bicor"
+  "mutinformation"
 )
 
 parallelDist_methods <- c(

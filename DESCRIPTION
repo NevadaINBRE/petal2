@@ -25,13 +25,13 @@ Imports:
     parallelDist,
     igraph,
     infotheo,
-    WGCNA,
-    Rdpack,
     data.table,
-    rBayesianOptimization
-biocViews:
-RdMacros: Rdpack
+    rBayesianOptimization,
+    Rcpp
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo

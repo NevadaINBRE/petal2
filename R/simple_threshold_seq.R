@@ -18,7 +18,6 @@
 #'    \insertAllCited{}
 #'
 #' @importFrom utils tail
-#' @importFrom Rdpack reprompt
 #' @return A sequence of threshold values.
 #' @export
 simple_threshold_seq <- function(x, sort_decreasing, length.out = 6) {

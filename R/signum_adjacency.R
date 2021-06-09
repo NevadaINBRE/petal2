@@ -19,5 +19,6 @@ signum_adjacency <- function(x, tau,
 
     x[b] <- 0
     x[!b] <- 1
-    x
+
+    return(x)
 }
